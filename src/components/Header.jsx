@@ -59,7 +59,7 @@ export default function Header() {
       </div>
 
       {/* Main navigation */}
-      <div className="bg-white px-4 md:px-16 py-3 flex justify-between items-center border-b relative">
+      <div className="bg-white px-4 md:px-16 py-3 flex justify-between items-center border-b relative shadow-xl">
         {/* Logo */}
         <div className="flex items-center">
           <a href="/" className="flex flex-row">
