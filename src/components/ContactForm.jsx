@@ -55,12 +55,12 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full mx-auto px-0">
       {submitStatus === "success" ? (
-        <div className="text-center py-8">
+        <div className="text-center py-6">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-12 w-12 mx-auto text-green-500 mb-4"
+            className="h-10 w-10 mx-auto text-green-500 mb-3"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -72,14 +72,14 @@ const ContactForm = () => {
               d="M5 13l4 4L19 7"
             />
           </svg>
-          <h3 className="text-xl mb-2">Thank You!</h3>
-          <p>Your enquiry has been submitted successfully.</p>
+          <h3 className="text-lg mb-2">Thank You!</h3>
+          <p className="text-sm">Your enquiry has been submitted successfully.</p>
         </div>
       ) : submitStatus === "error" ? (
-        <div className="text-center py-8">
+        <div className="text-center py-6">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-12 w-12 mx-auto text-red-500 mb-4"
+            className="h-10 w-10 mx-auto text-red-500 mb-3"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -91,37 +91,37 @@ const ContactForm = () => {
               d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
             />
           </svg>
-          <h3 className="text-xl mb-2">Submission Failed</h3>
-          <p className="mb-4">There was an error submitting your enquiry. Please try again.</p>
+          <h3 className="text-lg mb-2">Submission Failed</h3>
+          <p className="mb-3 text-sm">There was an error submitting your enquiry. Please try again.</p>
           <button
             onClick={() => setSubmitStatus(null)}
-            className="bg-white text-black py-2 px-6 text-sm hover:bg-gray-200"
+            className="bg-white text-black py-1.5 px-5 text-sm hover:bg-gray-200"
           >
             Try Again
           </button>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="w-full">
-          <div className="mb-6">
+          <div className="mb-4">
             <input
               type="text"
               name="firstName"
               value={formData.firstName}
               onChange={handleChange}
               placeholder="First Name"
-              className="w-full p-4 bg-white border border-gray-700 text-black focus:outline-none focus:border-white"
+              className="w-full p-3 sm:p-4 bg-white border border-gray-700 text-black focus:outline-none focus:border-white text-sm sm:text-base"
               required
             />
           </div>
 
-          <div className="mb-6 flex flex-col sm:flex-row gap-6">
+          <div className="mb-4 flex flex-col sm:flex-row gap-4">
             <input
               type="tel"
               name="telephone"
               value={formData.telephone}
               onChange={handleChange}
               placeholder="Phone Number"
-              className="w-full p-4 bg-white border border-gray-700 text-black focus:outline-none focus:border-white"
+              className="w-full p-3 sm:p-4 bg-white border border-gray-700 text-black focus:outline-none focus:border-white text-sm sm:text-base"
               required
             />
             <input
@@ -130,19 +130,19 @@ const ContactForm = () => {
               value={formData.email}
               onChange={handleChange}
               placeholder="Email"
-              className="w-full p-4 bg-white border border-gray-700 text-black focus:outline-none focus:border-white"
+              className="w-full p-3 sm:p-4 bg-white border border-gray-700 text-black focus:outline-none focus:border-white text-sm sm:text-base"
               required
             />
           </div>
 
-          <div className="mb-6">
+          <div className="mb-4">
             <textarea
               name="message"
               value={formData.message}
               onChange={handleChange}
               placeholder="Message"
-              rows="5"
-              className="w-full p-4 bg-white border border-gray-700 text-black focus:outline-none focus:border-white resize-none"
+              rows="4"
+              className="w-full p-3 sm:p-4 bg-white border border-gray-700 text-black focus:outline-none focus:border-white resize-none text-sm sm:text-base"
               required
             />
           </div>
@@ -150,7 +150,7 @@ const ContactForm = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`bg-white text-black px-8 py-4 border border-gray-700 text-sm font-poppins ${
+            className={`bg-white text-black px-6 py-2 sm:px-8 sm:py-3 border border-gray-700 text-sm font-poppins ${
               isSubmitting ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-200"
             }`}
           >

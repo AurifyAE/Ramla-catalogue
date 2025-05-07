@@ -31,6 +31,10 @@ function SingleCatalogue() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
+
   const handleProductClick = (productId) => {
     navigate(`/view-product/${productId}`);
   };

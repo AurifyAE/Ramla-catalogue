@@ -178,12 +178,12 @@ function Home() {
         <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center">
           <div className="container mx-auto px-8 animate-slide-in">
             <div className="max-w-xl text-white">
-              <h1 className="text-4xl font-montaga mb-4">
+              <h1 className="text-2xl max-sm:text-2xl md:text-3xl lg:text-4xl font-montaga mb-6">
                 Crafted in 24 Hours – Your perfect men's outfits by Ramla Style
                 Italia.
               </h1>
 
-              <p className="mb-8 text-gray-200 font-poppins">
+              <p className="mb-8 text-gray-200 font-poppins max-sm:text-sm">
                 At Ramla Suits in Dubai, we specialize in crafting bespoke
                 suits, tuxedos, shirts, and traditional wear tailored to your
                 unique style. Experience the luxury of personalized tailoring
@@ -191,7 +191,7 @@ function Home() {
               </p>
 
               <button
-                className="border-2 border-white font-poppins px-6 py-3 text-white hover:bg-white hover:text-black transition duration-300"
+                className="border-2 border-white font-poppins px-6 py-3 text-white hover:bg-white hover:text-black transition duration-300 max-sm:text-sm max-sm:px-4 max-sm:py-2"
                 onClick={handleNavigateToGetInTouch}
               >
                 Schedule a Visit Now
@@ -205,8 +205,8 @@ function Home() {
         {/* Section */}
         <div className="flex flex-col items-center w-full w-[81%] max-sm:w-[100%] p-8 bg-[#F5F4F0] shadow-sm mt-10">
           {/* Header */}
-          <div className="text-center mb-6 w-full">
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-montaga mb-6">
+          <div className="text-center mb-6 w-full max-sm:px-8">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-montaga text-black mb-6">
               Looking for the best men's tailoring shop in Dubai?
             </h1>
             <p className="text-sm md:text-base font-poppins max-w-4xl mx-auto">
@@ -219,7 +219,7 @@ function Home() {
 
           {/* CTA Button */}
           <button
-            className="bg-black text-white px-6 py-2 mb-8 hover:bg-gray-800 transition duration-300 text-sm md:text-base"
+            className="bg-black text-white px-6 py-2 mb-8 border hover:bg-transparent hover:text-black hover:border-black text-sm md:text-base"
             onMouseEnter={() => setIsHovered("cta")}
             onMouseLeave={() => setIsHovered(null)}
             onClick={handleNavigateToCatalogue}
@@ -251,7 +251,7 @@ function Home() {
                       src={category.image.url}
                       alt={category.name}
                       className={`w-52 h-60 md:h-60 object-contain transition-transform duration-500 ${
-                        isHovered === category._id ? "scale-110" : "scale-100"
+                        isHovered === category._id ? "scale-100" : "scale-100"
                       }`}
                     />
                   </div>
@@ -268,17 +268,17 @@ function Home() {
         <VideoPlayer videoSrc={videoBanner} />
 
         {/* Section */}
-        <div className="max-w-5xl mx-auto px-4 py-8">
+        <div className="max-w-5xl mx-auto px-4 py-8 max-sm:w-[85%]">
           {/* Features */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="flex flex-row items-center justify-center"
+                className="flex flex-row items-center justify-center max-sm:justify-start"
               >
-                <img src={feature.icon} className="w-10 mr-4" alt="" />
+                <img src={feature.icon} className="w-10 mr-4 max-sm:w-8" alt="" />
                 <div>
-                  <h3 className="font-poppins text-md">{feature.title}</h3>
+                  <h3 className="font-poppins text-md max-sm:text-sm">{feature.title}</h3>
                 </div>
               </div>
             ))}
@@ -287,10 +287,10 @@ function Home() {
 
         {/* Premium Fabric Brands */}
         <div className="w-full">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-montaga text-center text-[#581719] mb-10">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-montaga text-center text-[#581719] mb-10 max-sm:mb-6">
             Premium Fabric Brands
           </h2>
-          <div className="bg-[#F5F4F0] p-6 md:p-10 lg:p-14">
+          <div className="bg-[#F5F4F0] p-6 md:p-10 lg:p-14 max-sm:w-[90%]">
             {/* First row - Fixed marquee with looping and proper spacing */}
             <div className="mb-16 marquee-container">
               <Marquee
@@ -344,11 +344,11 @@ function Home() {
         {/* Testimonials */}
         <div className="flex justify-center items-center px-4 py-8">
           <div>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-montaga text-center text-[#581719] mb-10">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-montaga text-center text-[#581719] mb-10 max-sm:mb-6">
               Testimonials
             </h2>
 
-            <div className="relative max-w-2xl mx-auto">
+            <div className="relative max-w-2xl mx-auto max-sm:w-[70%]">
               {/* Testimonial card */}
               <div className="bg-gray-50 p-8 rounded-xl shadow-md relative">
                 <div className="pt-6 pb-2">

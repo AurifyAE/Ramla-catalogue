@@ -31,6 +31,11 @@ const ProductPage = () => {
   const [error, setError] = useState(null);
   const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
 
+  // Add scroll to top effect when component mounts or id changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
+
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
@@ -91,6 +96,7 @@ const ProductPage = () => {
 
   const handleSimilarProductClick = (productId) => {
     navigate(`/view-product/${productId}`);
+    // No need to manually scroll here as the useEffect will handle it
   };
 
   const breadcrumbPaths = [
@@ -204,11 +210,6 @@ const ProductPage = () => {
               </div>
             )}
           </div>
-
-          {/* Contact Form pushed to the bottom */}
-          {/* <div className="mt-auto">
-            <ContactForm />
-          </div> */}
         </div>
 
         {/* Product Info */}

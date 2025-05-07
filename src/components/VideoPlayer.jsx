@@ -49,7 +49,7 @@ function VideoPlayer({ videoSrc }) {
   }, []);
 
   return (
-    <div className="relative w-full max-w-4xl mx-auto mt-16 mb-10">
+    <div className="relative w-full max-w-4xl max-sm:w-[80%] mx-auto mt-16 mb-10">
       {/* Video without native controls */}
       <video
         ref={videoRef}
@@ -137,11 +137,11 @@ function VideoPlayer({ videoSrc }) {
       )}
 
       {/* Custom overlay text */}
-      <div className="absolute bottom-16 left-0 right-0 text-center text-white text-xl">
+      {/* <div className="absolute bottom-16 left-0 right-0 text-center text-white text-xl">
         <p className="font-light">
           Discover the custom-made luxury bespoke menswear in Dubai
         </p>
-      </div>
+      </div> */}
     </div>
   );
 }
