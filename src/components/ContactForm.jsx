@@ -1,84 +1,164 @@
-// ContactForm.jsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { sendEmailEnquiry } from "../api/api";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    phone: '',
-    email: '',
-    message: ''
+    firstName: "",
+    email: "",
+    telephone: "",
+    message: "",
   });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null); // null, 'success', 'error'
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Here you would typically send the data to your backend
-    // You could add form validation here as well
+    setIsSubmitting(true);
+
+    try {
+      await sendEmailEnquiry({
+        name: formData.firstName,
+        email: formData.email,
+        phone: formData.telephone,
+        message: formData.message,
+      });
+
+      setSubmitStatus("success");
+      setTimeout(() => {
+        resetForm();
+      }, 2000); // Reset after 2 seconds on success
+    } catch (error) {
+      console.error("Error sending email:", error);
+      setSubmitStatus("error");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      firstName: "",
+      email: "",
+      telephone: "",
+      message: "",
+    });
+    setSubmitStatus(null);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full">
-      <div className="mb-6">
-        <input
-          type="text"
-          name="firstName"
-          value={formData.firstName}
-          onChange={handleChange}
-          placeholder="First Name"
-          className="w-full p-4 bg-white border border-gray-700 text-black focus:outline-none focus:border-white"
-          required
-        />
-      </div>
-      
-      <div className="mb-6 flex flex-col md:flex-row gap-6">
-        <input
-          type="tel"
-          name="phone"
-          value={formData.phone}
-          onChange={handleChange}
-          placeholder="Phone Number"
-          className="w-full p-4 bg-white border border-gray-700 text-black focus:outline-none focus:border-white"
-          required
-        />
-        
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          placeholder="Email"
-          className="w-full p-4 bg-white border border-gray-700 text-black focus:outline-none focus:border-white"
-          required
-        />
-      </div>
-      
-      <div className="mb-6">
-        <textarea
-          name="message"
-          value={formData.message}
-          onChange={handleChange}
-          placeholder="Message"
-          rows="5"
-          className="w-full p-4 bg-white border border-gray-700 text-black focus:outline-none focus:border-white resize-none"
-          required
-        ></textarea>
-      </div>
-      
-      <button
-        type="submit"
-        className="bg-white text-black px-8 py-4 border border-gray-700 hover:bg-gray-600 focus:outline-none transition-colors"
-      >
-        Send Now
-      </button>
-    </form>
+    <div className="w-full">
+      {submitStatus === "success" ? (
+        <div className="text-center py-8">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-12 w-12 mx-auto text-green-500 mb-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+          <h3 className="text-xl mb-2">Thank You!</h3>
+          <p>Your enquiry has been submitted successfully.</p>
+        </div>
+      ) : submitStatus === "error" ? (
+        <div className="text-center py-8">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-12 w-12 mx-auto text-red-500 mb-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            />
+          </svg>
+          <h3 className="text-xl mb-2">Submission Failed</h3>
+          <p className="mb-4">There was an error submitting your enquiry. Please try again.</p>
+          <button
+            onClick={() => setSubmitStatus(null)}
+            className="bg-white text-black py-2 px-6 text-sm hover:bg-gray-200"
+          >
+            Try Again
+          </button>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="w-full">
+          <div className="mb-6">
+            <input
+              type="text"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+              placeholder="First Name"
+              className="w-full p-4 bg-white border border-gray-700 text-black focus:outline-none focus:border-white"
+              required
+            />
+          </div>
+
+          <div className="mb-6 flex flex-col sm:flex-row gap-6">
+            <input
+              type="tel"
+              name="telephone"
+              value={formData.telephone}
+              onChange={handleChange}
+              placeholder="Phone Number"
+              className="w-full p-4 bg-white border border-gray-700 text-black focus:outline-none focus:border-white"
+              required
+            />
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Email"
+              className="w-full p-4 bg-white border border-gray-700 text-black focus:outline-none focus:border-white"
+              required
+            />
+          </div>
+
+          <div className="mb-6">
+            <textarea
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              placeholder="Message"
+              rows="5"
+              className="w-full p-4 bg-white border border-gray-700 text-black focus:outline-none focus:border-white resize-none"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={`bg-white text-black px-8 py-4 border border-gray-700 text-sm font-poppins ${
+              isSubmitting ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-200"
+            }`}
+          >
+            {isSubmitting ? "Submitting..." : "Send Now"}
+          </button>
+        </form>
+      )}
+    </div>
   );
 };
 

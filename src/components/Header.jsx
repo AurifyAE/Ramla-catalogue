@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Search, Heart, Phone, Mail, Menu, X } from "lucide-react";
+import { Search, Phone, Mail, Menu, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import textName from "../assets/text.png";
@@ -7,7 +7,6 @@ import textName from "../assets/text.png";
 export default function Header() {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobile, setIsMobile] = useState(false);
 
@@ -27,19 +26,11 @@ export default function Header() {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-    if (isSearchOpen) setIsSearchOpen(false);
-  };
-
-  const toggleSearch = () => {
-    setIsSearchOpen(!isSearchOpen);
-    if (isMenuOpen) setIsMenuOpen(false);
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // Close search bar
-      setIsSearchOpen(false);
       // Navigate to search page with query parameter
       navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
       // Reset search query
@@ -76,31 +67,18 @@ export default function Header() {
               <img src={logo} alt="Logo" className="w-10 md:w-14" />
             </div>
             <div className="flex items-center">
-              <img
-                src={textName}
-                alt="Ramla Style Italia"
-                className="w-40 md:w-56 ml-2 md:ml-6"
-              />
+              <h2 className="ml-3 text-lg md:text-2xl lg:text-3xl font-montaga">
+                Ramla Style Italia
+              </h2>
             </div>
           </a>
         </div>
 
         {/* Mobile Menu Button */}
         <div className="flex md:hidden">
-          {isSearchOpen ? (
-            <button onClick={toggleSearch} className="p-2">
-              <X size={24} />
-            </button>
-          ) : (
-            <>
-              <button onClick={toggleSearch} className="p-2 mr-2">
-                <Search size={20} />
-              </button>
-              <button onClick={toggleMenu} className="p-2">
-                <Menu size={24} />
-              </button>
-            </>
-          )}
+          <button onClick={toggleMenu} className="p-2">
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
 
         {/* Navigation Links - Desktop */}
@@ -138,79 +116,80 @@ export default function Header() {
           </ul>
         </nav>
 
-        {/* Icons - Desktop */}
-        <div className="hidden md:flex items-center space-x-4">
-          <button onClick={toggleSearch} className="focus:outline-none">
-            <Search size={20} />
-          </button>
-          <Heart size={20} />
+        {/* Search Bar - Desktop (Always visible, replacing Heart icon) */}
+        <div className="hidden md:flex items-center">
+          <form onSubmit={handleSearch} className="flex items-center">
+            <input
+              type="text"
+              placeholder="Search..."
+              className="w-48 py-1 px-4 border border-gray-300 rounded-l focus:outline-none text-sm"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button type="submit" className="bg-black text-white p-2 rounded-r">
+              <Search size={14} />
+            </button>
+          </form>
         </div>
 
-        {/* Search Bar - Appears when search icon is clicked */}
-        {isSearchOpen && (
-          <div className="absolute top-full left-0 right-0 bg-white p-4 shadow-md z-10 border-t font-poppins">
-            <form onSubmit={handleSearch} className="flex items-center justify-end">
-              <input
-                type="text"
-                placeholder="Search products..."
-                className="w-full md:w-72 p-2 border border-gray-300 rounded-l focus:outline-none"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                autoFocus
-              />
-              <button
-                type="submit"
-                className="bg-black text-white p-2 rounded-r"
-              >
-                <Search size={20} />
-              </button>
-            </form>
+        {/* Mobile Navigation Menu */}
+        {isMenuOpen && (
+          <div className="absolute top-full left-0 right-0 z-10 md:hidden bg-white border-b">
+            <nav className="px-4 py-3">
+              <ul className="flex flex-col space-y-3">
+                <li>
+                  <a href="/" className="block px-1 py-2 text-md font-medium">
+                    Home
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/beposke"
+                    className="block px-1 py-2 text-md font-medium"
+                  >
+                    Bespoke Process
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/catalogue"
+                    className="block px-1 py-2 text-md font-medium"
+                  >
+                    Catalogue
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/get-in-touch"
+                    className="block px-1 py-2 text-md font-medium"
+                  >
+                    Get in Touch
+                  </a>
+                </li>
+              </ul>
+
+              {/* Search in mobile menu */}
+              <div className="mt-4">
+                <form onSubmit={handleSearch} className="flex items-center">
+                  <input
+                    type="text"
+                    placeholder="Search..."
+                    className="w-60 p-2 border border-gray-300 rounded-l focus:outline-none"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  <button
+                    type="submit"
+                    className="bg-black text-white p-2 rounded-r"
+                  >
+                    <Search size={25} />
+                  </button>
+                </form>
+              </div>
+            </nav>
           </div>
         )}
       </div>
-
-      {/* Mobile Navigation Menu */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-white border-b">
-          <nav className="px-4 py-3">
-            <ul className="flex flex-col space-y-3">
-              <li>
-                <a href="/" className="block px-1 py-2 text-md font-medium">
-                  Home
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/beposke"
-                  className="block px-1 py-2 text-md font-medium"
-                >
-                  Bespoke Process
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/catalogue"
-                  className="block px-1 py-2 text-md font-medium"
-                >
-                  Catalogue
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/get-in-touch"
-                  className="block px-1 py-2 text-md font-medium"
-                >
-                  Get in Touch
-                </a>
-              </li>
-            </ul>
-            <div className="mt-4 flex items-center">
-              <Heart size={20} />
-              <span className="ml-2">Favorites</span>
-            </div>
-          </nav>
-        </div>
-      )}
     </div>
   );
 }

@@ -1,0 +1,90 @@
+/* Add this to your App.css file */
+@keyframes slideIn {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.8s ease-out forwards;
+}
+
+/* Marquee container styles */
+.marquee-container {
+  width: 100%;
+  overflow: hidden;
+  max-width: 100vw;
+  position: relative;
+}
+
+/* Style for each brand logo item in the marquee */
+.marquee-container > div > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  transition: transform 0.3s ease;
+}
+
+/* Add hover effect to brand logos */
+.marquee-container img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: grayscale(20%);
+  transition: all 0.3s ease;
+}
+
+.marquee-container img:hover {
+  filter: grayscale(0%);
+  transform: scale(1.08);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .marquee-container > div > div {
+    padding: 0 16px;
+    min-width: 120px !important;
+    height: 48px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .marquee-container > div > div {
+    padding: 0 12px;
+    min-width: 100px !important;
+    height: 40px !important;
+  }
+}
+
+/* Fix for react-fast-marquee to ensure proper spacing */
+.marquee-container .marquee {
+  min-width: 100%;
+}
+
+.marquee-container .marquee-wrapper {
+  display: flex;
+}
+
+.animated-underline {
+  position: relative;
+  display: inline-block;
+  width: 0;
+  height: 2px;
+  background-color: gray;
+  transition: width 1s ease-in-out;
+}
+
+.animated-underline.animate {
+  width: 100%;
+}
+
+.title-container {
+  position: relative;
+  display: inline-block;
+}

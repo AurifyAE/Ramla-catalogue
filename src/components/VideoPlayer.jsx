@@ -90,7 +90,7 @@ function VideoPlayer({ videoSrc }) {
         </button>
 
         {/* Play/Pause button */}
-        <button
+        {/* <button
           onClick={togglePlayPause}
           className="bg-[#EAD4B4]/70 hover:bg-[#EAD4B4]/60 rounded-full p-2 transition"
         >
@@ -115,7 +115,7 @@ function VideoPlayer({ videoSrc }) {
               <path d="M8 5v14l11-7z" />
             </svg>
           )}
-        </button>
+        </button> */}
       </div>
 
       {/* Center play button (shown only when paused) */}

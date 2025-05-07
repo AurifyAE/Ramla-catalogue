@@ -7,8 +7,8 @@ function GetInTouch() {
     <div className="flex flex-col w-full">
       <div className="">
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.700850177936!2d103.82983807457536!3d1.3656487614118867!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da173db5c4c04b%3A0x10b0c93cb8d258a7!2s42%20Jln%20Senang%2C%20Singapore%20418220!5e0!3m2!1sen!2ssg!4v1714442432606!5m2!1sen!2ssg"
-          className="w-full h-[650px] max-sm:h-[350px] border-0"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d902.0056387768841!2d55.315644118571555!3d25.269836715976385!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5d7e4b311da3%3A0x2501cf567951faf1!2sRamla%20style%20Italia%20tailoring%20and%20textiles%20trading%20L.L.C!5e0!3m2!1sen!2sin!4v1746553918978!5m2!1sen!2sin"
+          className="w-full h-[650px] max-sm:h-[350px] border-0 rounded-b-[25px]"
           allowFullScreen=""
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"

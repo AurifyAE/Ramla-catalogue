@@ -47,3 +47,13 @@ export const searchProducts = async (query) => {
         throw error;
     }
 };
+
+// Send Email Enquiry
+export const sendEmailEnquiry = (emailData) => {
+    return axiosInstance.post('/mailer', {
+        name: emailData.name,
+        email: emailData.email,
+        phone: emailData.phone,
+        message: emailData.message
+    });
+};

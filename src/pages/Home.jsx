@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Marquee from "react-fast-marquee";
 import VideoPlayer from "../components/VideoPlayer";
 import banner from "../assets/home1.png";
 import icon1 from "../assets/icon1.png";
@@ -13,8 +14,13 @@ import brand5 from "../assets/brand5.png";
 import brand6 from "../assets/brand6.png";
 import brand7 from "../assets/brand7.png";
 import brand8 from "../assets/brand8.png";
+import brand9 from "../assets/brand9.png";
+import brand10 from "../assets/brand10.png";
+import brand11 from "../assets/brand11.png";
+import brand12 from "../assets/brand12.png";
 import videoBanner from "../assets/banner.mp4";
 import { getAllCategories } from "../api/api";
+import "../App.css";
 
 function Home() {
   const navigate = useNavigate();
@@ -23,6 +29,45 @@ function Home() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  const [brands, setBrands] = useState([
+    { name: "Loro Piana", logo: brand1 },
+    { name: "Scabal", logo: brand2 },
+    { name: "Vitale Barberis Canonico", logo: brand3 },
+    { name: "Piacenza", logo: brand4 },
+    { name: "Soktas", logo: brand5 },
+    { name: "Vercelli", logo: brand6 },
+    { name: "Mozzo", logo: brand7 },
+    { name: "Grado", logo: brand8 },
+    { name: "Canclini", logo: brand9 },
+    { name: "Tessitura", logo: brand10 },
+    { name: "John", logo: brand11 },
+    { name: "Taylor", logo: brand12 },
+  ]);
+
+  const row1Brands = brands.slice(0, 6);
+  const row2Brands = brands.slice(6, 12);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollPosition(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  // Calculate animation offset based on scroll position with constraints
+  const maxScroll = 200;
+  const scrollFactor = 0.2;
+  const imageTranslateY = Math.min(
+    scrollPosition * scrollFactor,
+    maxScroll * scrollFactor
+  );
 
   // Fetch categories from API
   useEffect(() => {
@@ -55,17 +100,6 @@ function Home() {
       icon: icon3,
       title: "Luxury suits delivered to your location.",
     },
-  ];
-
-  const brands = [
-    { name: "Loro Piana", logo: brand1 },
-    { name: "Scabal", logo: brand2 },
-    { name: "Vitale Barberis Canonico", logo: brand3 },
-    { name: "Piacenza", logo: brand4 },
-    { name: "Soktas", logo: brand5 },
-    { name: "Vercelli", logo: brand6 },
-    { name: "Mozzo", logo: brand7 },
-    { name: "Grado", logo: brand8 },
   ];
 
   const testimonials = [
@@ -107,183 +141,285 @@ function Home() {
     );
   };
 
-  // Handle category click - navigate to single-catalogue page
+  // Navigate to single-catalogue page
   const handleCategoryClick = (categoryId) => {
     navigate(`/single-catalogue/${categoryId}`);
   };
 
+  // Navigate to catalogue page
+  const handleNavigateToCatalogue = () => {
+    navigate("/catalogue");
+  };
+
+  // Navigate to get in touch page
+  const handleNavigateToGetInTouch = () => {
+    navigate("/get-in-touch");
+  };
+
   return (
-    <div className="flex flex-col justify-center items-center p-6">
-      <div className="">
-        <img src={banner} alt="" />
-      </div>
-
-      {/* Section */}
-      <div className="flex flex-col items-center w-full w-[81%] max-sm:w-[100%] p-8 bg-[#F5F4F0] shadow-sm mt-10">
-        {/* Header */}
-        <div className="text-center mb-6 w-full">
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-montaga mb-6">
-            Looking for the best men's tailoring shop in Dubai?
-          </h1>
-          <p className="text-sm md:text-base font-poppins max-w-4xl mx-auto">
-            At Ramla Style Italia, we provide personalized consultations to
-            match your unique style and preferences. Experience expertly crafted
-            bespoke suits, tailored to perfection—
-            <span className="font-bold">delivered within just 24 hours.</span>
-          </p>
-        </div>
-
-        {/* CTA Button */}
-        <button
-          className="bg-black text-white px-6 py-2 mb-8 hover:bg-gray-800 transition duration-300 text-sm md:text-base"
-          onMouseEnter={() => setIsHovered("cta")}
-          onMouseLeave={() => setIsHovered(null)}
+    <div className="flex flex-col justify-center items-center">
+      <div className="relative w-full h-screen overflow-hidden bg-black">
+        {/* Banner Image with Animation */}
+        <div
+          className="w-full h-full relative"
+          style={{
+            transform: `translateY(${imageTranslateY}px) scale(1.1)`,
+            transition: "transform 0.5s ease-out",
+          }}
         >
-          Explore Now
-        </button>
+          <img
+            src={banner}
+            alt="Luxury Suit"
+            className="w-full h-full object-cover"
+          />
+        </div>
 
-        {/* Category Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-          {loading ? (
-            <div className="col-span-4 flex justify-center items-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#581719]"></div>
-          </div>
-          ) : error ? (
-            <div className="col-span-4 text-center py-8 text-red-500">{error}</div>
-          ) : (
-            categories.map((category) => (
-              <div
-                key={category._id}
-                className="flex flex-col cursor-pointer"
-                onMouseEnter={() => setIsHovered(category._id)}
-                onMouseLeave={() => setIsHovered(null)}
-                onClick={() => handleCategoryClick(category._id)}
+        {/* Content Overlay with Slide-in Animation */}
+        <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center">
+          <div className="container mx-auto px-8 animate-slide-in">
+            <div className="max-w-xl text-white">
+              <h1 className="text-4xl font-montaga mb-4">
+                Crafted in 24 Hours – Your perfect men's outfits by Ramla Style
+                Italia.
+              </h1>
+
+              <p className="mb-8 text-gray-200 font-poppins">
+                At Ramla Suits in Dubai, we specialize in crafting bespoke
+                suits, tuxedos, shirts, and traditional wear tailored to your
+                unique style. Experience the luxury of personalized tailoring
+                with our expert craftsmanship and premium fabrics.
+              </p>
+
+              <button
+                className="border-2 border-white font-poppins px-6 py-3 text-white hover:bg-white hover:text-black transition duration-300"
+                onClick={handleNavigateToGetInTouch}
               >
-                <div className="relative overflow-hidden rounded-lg mb-2 w-full">
-                  <img
-                    src={category.image.url}
-                    alt={category.name}
-                    className={`w-52 h-60 md:h-60 object-contain transition-transform duration-500 ${
-                      isHovered === category._id ? "scale-110" : "scale-100"
-                    }`}
-                  />
-                </div>
-                <p className="font-semibold text-center font-poppins text-sm md:text-base">
-                  {category.name}
-                </p>
-              </div>
-            ))
-          )}
-        </div>
-      </div>
-
-      {/* Video */}
-      <VideoPlayer videoSrc={videoBanner} />
-
-      {/* Section */}
-      <div className="max-w-5xl mx-auto px-4 py-8">
-        {/* Features */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          {features.map((feature, index) => (
-            <div
-              key={index}
-              className="flex flex-row items-center justify-center"
-            >
-              <img src={feature.icon} className="w-10 mr-4" alt="" />
-              <div>
-                <h3 className="font-poppins text-md">{feature.title}</h3>
-              </div>
+                Schedule a Visit Now
+              </button>
             </div>
-          ))}
+          </div>
         </div>
       </div>
 
-      <div className="max-w-7xl px-4 py-8">
+      <div className="">
+        {/* Section */}
+        <div className="flex flex-col items-center w-full w-[81%] max-sm:w-[100%] p-8 bg-[#F5F4F0] shadow-sm mt-10">
+          {/* Header */}
+          <div className="text-center mb-6 w-full">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-montaga mb-6">
+              Looking for the best men's tailoring shop in Dubai?
+            </h1>
+            <p className="text-sm md:text-base font-poppins max-w-4xl mx-auto">
+              At Ramla Style Italia, we provide personalized consultations to
+              match your unique style and preferences. Experience expertly
+              crafted bespoke suits, tailored to perfection—
+              <span className="font-bold">delivered within just 24 hours.</span>
+            </p>
+          </div>
+
+          {/* CTA Button */}
+          <button
+            className="bg-black text-white px-6 py-2 mb-8 hover:bg-gray-800 transition duration-300 text-sm md:text-base"
+            onMouseEnter={() => setIsHovered("cta")}
+            onMouseLeave={() => setIsHovered(null)}
+            onClick={handleNavigateToCatalogue}
+          >
+            Explore Now
+          </button>
+
+          {/* Category Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+            {loading ? (
+              <div className="col-span-4 flex justify-center items-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#581719]"></div>
+              </div>
+            ) : error ? (
+              <div className="col-span-4 text-center py-8 text-red-500">
+                {error}
+              </div>
+            ) : (
+              categories.map((category) => (
+                <div
+                  key={category._id}
+                  className="flex flex-col cursor-pointer"
+                  onMouseEnter={() => setIsHovered(category._id)}
+                  onMouseLeave={() => setIsHovered(null)}
+                  onClick={() => handleCategoryClick(category._id)}
+                >
+                  <div className="relative overflow-hidden rounded-lg mb-2 w-full">
+                    <img
+                      src={category.image.url}
+                      alt={category.name}
+                      className={`w-52 h-60 md:h-60 object-contain transition-transform duration-500 ${
+                        isHovered === category._id ? "scale-110" : "scale-100"
+                      }`}
+                    />
+                  </div>
+                  <p className="font-semibold text-center font-poppins text-sm md:text-base">
+                    {category.name}
+                  </p>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+
+        {/* Video */}
+        <VideoPlayer videoSrc={videoBanner} />
+
+        {/* Section */}
+        <div className="max-w-5xl mx-auto px-4 py-8">
+          {/* Features */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            {features.map((feature, index) => (
+              <div
+                key={index}
+                className="flex flex-row items-center justify-center"
+              >
+                <img src={feature.icon} className="w-10 mr-4" alt="" />
+                <div>
+                  <h3 className="font-poppins text-md">{feature.title}</h3>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Premium Fabric Brands */}
-        <div className="mb-16 w-full">
+        <div className="w-full">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-montaga text-center text-[#581719] mb-10">
             Premium Fabric Brands
           </h2>
-          <div className="bg-[#F5F4F0] p-14 rounded-lg w-full">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 gap-y-24">
-              {brands.map((brand, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-center h-16 transition-transform hover:scale-105"
-                >
-                  <div>
-                    <img src={brand.logo} alt={brand.name} />
+          <div className="bg-[#F5F4F0] p-6 md:p-10 lg:p-14">
+            {/* First row - Fixed marquee with looping and proper spacing */}
+            <div className="mb-16 marquee-container">
+              <Marquee
+                speed={40}
+                direction="left"
+                gradient={false}
+                pauseOnHover={false}
+                loop={0}
+              >
+                {row1Brands.map((brand, index) => (
+                  <div
+                    key={`row1-${index}`}
+                    className="flex items-center justify-center h-16 mx-8 overflow-hidden"
+                  >
+                    <img
+                      src={brand.logo}
+                      alt={brand.name}
+                      className="w-32 h-20 object-contain"
+                    />
                   </div>
-                </div>
-              ))}
+                ))}
+              </Marquee>
+            </div>
+
+            {/* Second row - Fixed marquee with looping and proper spacing  transition-transform hover:scale-105*/}
+            <div className="marquee-container">
+              <Marquee
+                speed={40}
+                direction="left"
+                gradient={false}
+                pauseOnHover={false}
+                loop={0}
+              >
+                {row2Brands.map((brand, index) => (
+                  <div
+                    key={`row2-${index}`}
+                    className="flex items-center justify-center h-16 mx-8 overflow-hidden"
+                  >
+                    <img
+                      src={brand.logo}
+                      alt={brand.name}
+                      className="w-32 h-20 object-contain"
+                    />
+                  </div>
+                ))}
+              </Marquee>
             </div>
           </div>
         </div>
 
         {/* Testimonials */}
-        <div>
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-montaga text-center text-[#581719] mb-10">
-            Testimonials
-          </h2>
-          <div className="relative max-w-2xl mx-auto">
-            <div className="bg-gray-50 p-8 rounded-lg shadow-sm relative">
-              <div className="text-4xl text-gray-300 absolute top-4 left-4">
-                "
-              </div>
-              <div className="pt-6 pb-2">
-                <p className="text-center text-gray-800">
-                  "{testimonials[currentTestimonial].quote}"
-                </p>
-              </div>
-              <div className="text-center mt-4">
-                <h4 className="font-medium">
-                  {testimonials[currentTestimonial].author}
-                </h4>
-                <p className="text-sm text-gray-600">
-                  {testimonials[currentTestimonial].position}
-                </p>
-              </div>
-            </div>
+        <div className="flex justify-center items-center px-4 py-8">
+          <div>
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-montaga text-center text-[#581719] mb-10">
+              Testimonials
+            </h2>
 
-            <div className="flex justify-between mt-4">
-              <button
-                onClick={prevTestimonial}
-                className="p-2 rounded-full border border-gray-300 hover:bg-gray-100"
-                aria-label="Previous testimonial"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+            <div className="relative max-w-2xl mx-auto">
+              {/* Testimonial card */}
+              <div className="bg-gray-50 p-8 rounded-xl shadow-md relative">
+                <div className="pt-6 pb-2">
+                  <p className="text-center text-gray-800">
+                    "{testimonials[currentTestimonial].quote}"
+                  </p>
+                </div>
+                <div className="text-center mt-4">
+                  <h4 className="font-medium">
+                    {testimonials[currentTestimonial].author}
+                  </h4>
+                  <p className="text-sm text-gray-600">
+                    {testimonials[currentTestimonial].position}
+                  </p>
+                </div>
+              </div>
+
+              {/* Navigation buttons on sides with gap */}
+              <div className="absolute top-1/2 -translate-y-1/2 left-0 -ml-12">
+                <button
+                  onClick={prevTestimonial}
+                  disabled={currentTestimonial === 0}
+                  className={`p-2 rounded-full border border-[#532732] bg-white ${
+                    currentTestimonial === 0
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:bg-gray-100"
+                  }`}
+                  aria-label="Previous testimonial"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-              </button>
-              <button
-                onClick={nextTestimonial}
-                className="p-2 rounded-full border border-gray-300 hover:bg-gray-100"
-                aria-label="Next testimonial"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="#532732"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="3"
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="absolute top-1/2 -translate-y-1/2 right-0 -mr-12">
+                <button
+                  onClick={nextTestimonial}
+                  disabled={currentTestimonial === testimonials.length - 1}
+                  className={`p-2 rounded-full border border-[#532732] bg-white ${
+                    currentTestimonial === testimonials.length - 1
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:bg-gray-100"
+                  }`}
+                  aria-label="Next testimonial"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </button>
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="#532732"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="3"
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </div>
