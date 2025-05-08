@@ -1,8 +1,13 @@
-import React from "react";
+import React, {useEffect} from "react";
 import whatsappIcon from "../assets/whatsapp.png";
 import ContactForm from "../components/ContactForm";
 
 function GetInTouch() {
+  // Add scroll to top effect when component mounts or id changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="flex flex-col w-full">
       <div className="">
@@ -24,7 +29,11 @@ function GetInTouch() {
           <span className="text-lg max-sm:text-sm font-poppins font-[500] mr-4">
             Connect On Whatsapp
           </span>
-          <img src={whatsappIcon} alt="WhatsApp Icon" className="w-10 h-10 max-sm:w-7 max-sm:h-7" />
+          <img
+            src={whatsappIcon}
+            alt="WhatsApp Icon"
+            className="w-10 h-10 max-sm:w-7 max-sm:h-7"
+          />
         </a>
       </div>
       <div className="flex justify-center w-full px-4 mb-12">
@@ -36,4 +45,4 @@ function GetInTouch() {
   );
 }
 
-export default GetInTouch
+export default GetInTouch;

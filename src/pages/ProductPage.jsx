@@ -158,7 +158,7 @@ const ProductPage = () => {
                     {product.images.map((imageUrl, index) => (
                       <SwiperSlide
                         key={index}
-                        className={`border rounded overflow-hidden ${
+                        className={`border overflow-hidden ${
                           activeIndex === index
                             ? "border-2 border-gray-400"
                             : ""
@@ -167,7 +167,7 @@ const ProductPage = () => {
                         <img
                           src={imageUrl}
                           alt={`${product.name} thumbnail ${index + 1}`}
-                          className="w-full h-full object-contain cursor-pointer"
+                          className="w-full h-full object-cover cursor-pointer"
                         />
                       </SwiperSlide>
                     ))}
@@ -185,7 +185,7 @@ const ProductPage = () => {
                           : null,
                     }}
                     modules={[FreeMode, Navigation, Thumbs]}
-                    className="w-full h-full rounded-lg"
+                    className="w-full h-full"
                     onSlideChange={(swiper) =>
                       setActiveIndex(swiper.activeIndex)
                     }
@@ -195,7 +195,7 @@ const ProductPage = () => {
                         <img
                           src={imageUrl}
                           alt={`${product.name} view ${index + 1}`}
-                          className="w-full h-full object-contain"
+                          className="w-full h-full object-cover"
                         />
                       </SwiperSlide>
                     ))}
@@ -291,7 +291,7 @@ const ProductPage = () => {
             {similarProducts.map((similarProduct) => (
               <div
                 key={similarProduct._id}
-                className="w-56 h-56 overflow-hidden cursor-pointer hover:opacity-90 transition-opacity rounded-md"
+                className="w-56 h-56 max-sm:w-40 max-sm:h-40 overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
                 onClick={() => handleSimilarProductClick(similarProduct._id)}
               >
                 <img

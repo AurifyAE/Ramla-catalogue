@@ -85,7 +85,7 @@ const EnquiryFormModal = ({ isOpen, onClose, productName }) => {
           <h2 className="text-xl font-montaga mb-4">Enquiry Form</h2>
 
           <p className="text-sm font-poppins mb-8">
-            Call us on +44 (0)20 7734 5985, or use this form to enquire about
+            Call us on +971 4 265 2388, or use this form to enquire about
             styling advice and cloths, to book an appointment for a fitting or
             to discuss your needs with one of our cutters.
           </p>

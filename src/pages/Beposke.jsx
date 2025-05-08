@@ -9,36 +9,45 @@ import bsp1 from "../assets/beposke/bsp1.png";
 import bsp2 from "../assets/beposke/bsp2.png";
 import bsp3 from "../assets/beposke/bsp3.png";
 import bsp4 from "../assets/beposke/bsp4.png";
-import "../App.css"
+import { useNavigate } from "react-router-dom";
+import "../App.css";
 
 function Beposke() {
   const stepRefs = useRef([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const options = {
       root: null,
-      rootMargin: '0px',
-      threshold: 0.3
+      rootMargin: "0px",
+      threshold: 0.3,
     };
 
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.querySelector('.animated-underline').classList.add('animate');
+          entry.target
+            .querySelector(".animated-underline")
+            .classList.add("animate");
         }
       });
     }, options);
 
-    stepRefs.current.forEach(ref => {
+    stepRefs.current.forEach((ref) => {
       if (ref) observer.observe(ref);
     });
 
     return () => {
-      stepRefs.current.forEach(ref => {
+      stepRefs.current.forEach((ref) => {
         if (ref) observer.unobserve(ref);
       });
     };
   }, []);
+
+  // Navigate to get in touch page
+  const handleNavigateToGetInTouch = () => {
+    navigate("/get-in-touch");
+  };
 
   const steps = [
     {
@@ -108,7 +117,7 @@ function Beposke() {
           {steps.map((step, index) => (
             <div
               key={step.number}
-              ref={el => stepRefs.current[index] = el}
+              ref={(el) => (stepRefs.current[index] = el)}
               className="flex flex-col md:flex-row items-center pb-6 md:pb-8"
             >
               <div
@@ -172,12 +181,15 @@ function Beposke() {
       </div>
 
       {/* Booking */}
-      <div className="flex flex-col justify-center items-center max-w-3xl w-full sm:max-w-[90%] md:max-w-[80%] lg:max-w-3xl mb-16 md:mb-24 px-4">
-        <h2 className="font-poppins text-lg sm:text-xl md:text-2xl text-center mb-4 md:mb-6">
+      <div className="flex flex-col justify-center items-center max-w-3xl w-full sm:max-w-[90%] md:max-w-[80%] lg:max-w-2xl mb-16 md:mb-24 px-4">
+        <h2 className="font-poppins text-lg sm:text-xl md:text-xl text-center mb-4 md:mb-6">
           Book an appointment today and discover the finest custom made suits
           delivered in 24 Hours
         </h2>
-        <button className="font-poppins border bg-black text-white px-4 sm:px-6 py-2 text-xs sm:text-sm md:text-base hover:bg-transparent hover:text-black hover:border hover:border-black transition-colors duration-300">
+        <button
+          onClick={handleNavigateToGetInTouch}
+          className="font-poppins border bg-black text-white px-4 sm:px-6 py-2 text-xs sm:text-sm md:text-base hover:bg-transparent hover:text-black hover:border hover:border-black transition-colors duration-300"
+        >
           Schedule a Visit Now
         </button>
       </div>

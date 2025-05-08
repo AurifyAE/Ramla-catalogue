@@ -205,14 +205,14 @@ function SingleCatalogue() {
         ) : (
           <div className="mb-12">
             <h2 className="text-lg sm:text-xl font-semibold text-gray-900 font-poppins mb-6 max-sm:px-2">
-              {category && category.name === "Bespoke" ? "2 Pcs and 3 Pcs Bespoke Suits" : category.name}
+              {category && category.name === "Bespoke Suits" ? "2 Pcs and 3 Pcs Bespoke Suits" : category.name}
             </h2>
             {products.length > 0 ? (
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-sm:gap-8 max-sm:px-4">
                 {products.map((product) => (
                   <div
                     key={product._id}
-                    className="aspect-square overflow-hidden bg-gray-100 cursor-pointer hover:opacity-90 transition-opacity rounded-md shadow-sm"
+                    className="aspect-square overflow-hidden bg-gray-100 cursor-pointer hover:opacity-90 transition-opacity shadow-sm"
                     onClick={() => handleProductClick(product._id)}
                   >
                     <img

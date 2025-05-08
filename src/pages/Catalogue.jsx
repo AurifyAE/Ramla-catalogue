@@ -13,6 +13,11 @@ function Catalogue() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  // Add scroll to top effect when component mounts or id changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const handleProductClick = (productId) => {
     navigate(`/view-product/${productId}`);
   };
@@ -237,7 +242,7 @@ function Catalogue() {
                     productsByCategory[category._id].map((product) => (
                       <div
                         key={product._id}
-                        className="aspect-square overflow-hidden bg-gray-100 cursor-pointer hover:opacity-90 transition-opacity rounded-md shadow-sm"
+                        className="aspect-square overflow-hidden bg-gray-100 cursor-pointer hover:opacity-90 transition-opacity shadow-sm"
                         onClick={() => handleProductClick(product._id)}
                       >
                         <img
@@ -252,7 +257,7 @@ function Catalogue() {
                       </div>
                     ))
                   ) : (
-                    <div className="aspect-square overflow-hidden bg-gray-100 rounded-md shadow-sm">
+                    <div className="aspect-square overflow-hidden bg-gray-100 shadow-sm">
                       <img
                         src={category.image?.url || "/api/placeholder/240/300"}
                         alt={category.name || "Category image"}

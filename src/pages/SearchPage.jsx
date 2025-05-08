@@ -13,7 +13,32 @@ export default function SearchPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalItems, setTotalItems] = useState(0);
+  // Add a debounced query state
+  const [debouncedQuery, setDebouncedQuery] = useState(initialQuery);
 
+  // Set up debounce effect
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setDebouncedQuery(searchQuery);
+    }, 300); // 300ms delay before search triggers
+
+    return () => clearTimeout(timeoutId);
+  }, [searchQuery]);
+
+  // Fetch products when debounced query changes
+  useEffect(() => {
+    if (debouncedQuery !== initialQuery) {
+      // Update URL with debounced query
+      const trimmedQuery = debouncedQuery?.trim() || "";
+      if (trimmedQuery) {
+        navigate(`/search?query=${encodeURIComponent(trimmedQuery)}`, { replace: true });
+      }
+    }
+    
+    fetchProducts(debouncedQuery);
+  }, [debouncedQuery]);
+
+  // Initial fetch on component mount
   useEffect(() => {
     fetchProducts(initialQuery);
   }, [initialQuery]);
@@ -58,7 +83,7 @@ export default function SearchPage() {
     }
 
     navigate(`/search?query=${encodeURIComponent(trimmedQuery)}`);
-    fetchProducts(trimmedQuery);
+    // No need to call fetchProducts here as the useEffect will handle it
   };
 
   const goBack = () => {
@@ -105,17 +130,17 @@ export default function SearchPage() {
       {/* Main content */}
       <div className="max-w-6xl mx-auto px-4 md:px-8 py-6">
         {/* Search summary */}
-        {initialQuery && !loading && (
+        {debouncedQuery && !loading && (
           <div className="mb-6">
             {products.length > 0 ? (
               <p className="font-poppins text-gray-600 font-medium">
                 Found {totalItems} results for "
-                <span className="text-blue-600">{initialQuery}</span>"
+                <span className="text-blue-600">{debouncedQuery}</span>"
               </p>
             ) : (
               <p className="font-poppins text-gray-600 font-medium">
                 No results found for "
-                <span className="text-blue-600">{initialQuery}</span>"
+                <span className="text-blue-600">{debouncedQuery}</span>"
               </p>
             )}
           </div>
@@ -129,26 +154,26 @@ export default function SearchPage() {
         )}
 
         {/* Empty states */}
-        {!loading && !initialQuery && (
+        {!loading && !debouncedQuery && (
           <div className="flex flex-col items-center justify-center py-16 text-center">
             <Search size={48} className="text-gray-300 mb-4" />
             <h2 className="text-xl font-medium text-gray-800 mb-2">
               Start your search
             </h2>
             <p className="font-poppins text-gray-500 max-w-md">
-              Enter a keyword in the search box above to find products
+              Start typing to find products instantly
             </p>
           </div>
         )}
 
-        {!loading && initialQuery && products.length === 0 && (
+        {!loading && debouncedQuery && products.length === 0 && (
           <div className="flex flex-col items-center justify-center py-16 text-center">
             <ShoppingBag size={48} className="text-gray-300 mb-4" />
             <h2 className="text-xl font-medium text-gray-800 mb-2">
               No products found
             </h2>
             <p className="font-poppins text-gray-500 max-w-md">
-              We couldn't find any products matching "{initialQuery}". Try a
+              We couldn't find any products matching "{debouncedQuery}". Try a
               different search term.
             </p>
           </div>
@@ -161,7 +186,7 @@ export default function SearchPage() {
               <div key={product._id} className="group">
                 <a
                   href={`/view-product/${product._id}`}
-                  className="block bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
+                  className="block bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
                 >
                   <div className="aspect-square overflow-hidden">
                     <img

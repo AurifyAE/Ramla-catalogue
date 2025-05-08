@@ -29,7 +29,7 @@ function Home() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [scrollPosition, setScrollPosition] = useState(0);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const [brands, setBrands] = useState([
     { name: "Loro Piana", logo: brand1 },
@@ -49,25 +49,39 @@ function Home() {
   const row1Brands = brands.slice(0, 6);
   const row2Brands = brands.slice(6, 12);
 
+  // Track mouse movement
   useEffect(() => {
-    const handleScroll = () => {
-      setScrollPosition(window.scrollY);
+    const handleMouseMove = (e) => {
+      setMousePosition({
+        x: e.clientX,
+        y: e.clientY,
+      });
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("mousemove", handleMouseMove);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
 
-  // Calculate animation offset based on scroll position with constraints
-  const maxScroll = 200;
-  const scrollFactor = 0.2;
-  const imageTranslateY = Math.min(
-    scrollPosition * scrollFactor,
-    maxScroll * scrollFactor
-  );
+  // Calculate image translation based on mouse position
+  const calculateTranslation = () => {
+    const windowHeight = window.innerHeight;
+    const windowWidth = window.innerWidth;
+
+    // Calculate percentage of mouse position relative to window dimensions
+    const yPercentage = (mousePosition.y / windowHeight) * 100;
+    const xPercentage = (mousePosition.x / windowWidth) * 100;
+
+    // Transform these percentages into translation values (maximum 30px movement)
+    const yTranslate = ((yPercentage - 50) / 50) * -60;
+    const xTranslate = ((xPercentage - 50) / 50) * -0;
+
+    return { xTranslate, yTranslate };
+  };
+
+  const { xTranslate, yTranslate } = calculateTranslation();
 
   // Fetch categories from API
   useEffect(() => {
@@ -159,12 +173,12 @@ function Home() {
   return (
     <div className="flex flex-col justify-center items-center">
       <div className="relative w-full h-screen overflow-hidden bg-black">
-        {/* Banner Image with Animation */}
+        {/* Banner Image with Parallax Animation */}
         <div
           className="w-full h-full relative"
           style={{
-            transform: `translateY(${imageTranslateY}px) scale(1.1)`,
-            transition: "transform 0.5s ease-out",
+            transform: `translate(${xTranslate}px, ${yTranslate}px) scale(1.1)`,
+            transition: "transform 0.1s ease-out",
           }}
         >
           <img
@@ -174,9 +188,9 @@ function Home() {
           />
         </div>
 
-        {/* Content Overlay with Slide-in Animation */}
+        {/* Content Overlay */}
         <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center">
-          <div className="container mx-auto px-8 animate-slide-in">
+          <div className="container mx-auto px-8">
             <div className="max-w-xl text-white">
               <h1 className="text-2xl max-sm:text-2xl md:text-3xl lg:text-4xl font-montaga mb-6">
                 Crafted in 24 Hours – Your perfect men's outfits by Ramla Style
@@ -191,7 +205,7 @@ function Home() {
               </p>
 
               <button
-                className="border-2 border-white font-poppins px-6 py-3 text-white hover:bg-white hover:text-black transition duration-300 max-sm:text-sm max-sm:px-4 max-sm:py-2"
+                className="border-2 border-white px-6 py-3 font-poppins text-white hover:bg-white hover:text-black transition duration-300 max-sm:text-sm max-sm:px-4 max-sm:py-2"
                 onClick={handleNavigateToGetInTouch}
               >
                 Schedule a Visit Now
@@ -250,8 +264,8 @@ function Home() {
                     <img
                       src={category.image.url}
                       alt={category.name}
-                      className={`w-52 h-60 md:h-60 object-contain transition-transform duration-500 ${
-                        isHovered === category._id ? "scale-100" : "scale-100"
+                      className={`w-48 h-56 md:h-56 object-contain transition-transform duration-500 ${
+                        isHovered === category._id ? "scale-110" : "scale-110"
                       }`}
                     />
                   </div>
@@ -276,9 +290,15 @@ function Home() {
                 key={index}
                 className="flex flex-row items-center justify-center max-sm:justify-start"
               >
-                <img src={feature.icon} className="w-10 mr-4 max-sm:w-8" alt="" />
+                <img
+                  src={feature.icon}
+                  className="w-10 mr-4 max-sm:w-8"
+                  alt=""
+                />
                 <div>
-                  <h3 className="font-poppins text-md max-sm:text-sm">{feature.title}</h3>
+                  <h3 className="font-poppins text-md max-sm:text-sm">
+                    {feature.title}
+                  </h3>
                 </div>
               </div>
             ))}
@@ -290,20 +310,21 @@ function Home() {
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-montaga text-center text-[#581719] mb-10 max-sm:mb-6">
             Premium Fabric Brands
           </h2>
-          <div className="bg-[#F5F4F0] p-6 md:p-10 lg:p-14 max-sm:w-[90%]">
-            {/* First row - Fixed marquee with looping and proper spacing */}
-            <div className="mb-16 marquee-container">
+          <div className="bg-[#F5F4F0] py-6 md:py-10 lg:py-14 px-4 md:px-6 w-full">
+            {/* First row - Modified marquee settings for seamless looping */}
+            <div className="mb-16">
               <Marquee
                 speed={40}
                 direction="left"
                 gradient={false}
                 pauseOnHover={false}
                 loop={0}
+                className="overflow-hidden"
               >
-                {row1Brands.map((brand, index) => (
+                {[...row1Brands, ...row1Brands].map((brand, index) => (
                   <div
                     key={`row1-${index}`}
-                    className="flex items-center justify-center h-16 mx-8 overflow-hidden"
+                    className="flex items-center justify-center h-16 mx-4 overflow-hidden"
                   >
                     <img
                       src={brand.logo}
@@ -315,19 +336,21 @@ function Home() {
               </Marquee>
             </div>
 
-            {/* Second row - Fixed marquee with looping and proper spacing  transition-transform hover:scale-105*/}
-            <div className="marquee-container">
+            {/* Second row - Modified marquee settings for seamless looping */}
+            <div>
               <Marquee
                 speed={40}
                 direction="left"
                 gradient={false}
                 pauseOnHover={false}
                 loop={0}
+                className="overflow-hidden"
               >
-                {row2Brands.map((brand, index) => (
+                {/* Each brand item has reduced margin to close gaps */}
+                {[...row2Brands, ...row2Brands].map((brand, index) => (
                   <div
                     key={`row2-${index}`}
-                    className="flex items-center justify-center h-16 mx-8 overflow-hidden"
+                    className="flex items-center justify-center h-16 mx-4 overflow-hidden"
                   >
                     <img
                       src={brand.logo}
@@ -342,15 +365,15 @@ function Home() {
         </div>
 
         {/* Testimonials */}
-        <div className="flex justify-center items-center px-4 py-8">
+        <div className="flex justify-center items-center px-4 py-8 mt-16">
           <div>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-montaga text-center text-[#581719] mb-10 max-sm:mb-6">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-montaga text-center text-[#581719] mb-10 max-sm:mb-14">
               Testimonials
             </h2>
 
             <div className="relative max-w-2xl mx-auto max-sm:w-[70%]">
               {/* Testimonial card */}
-              <div className="bg-gray-50 p-8 rounded-xl shadow-md relative">
+              <div className="bg-gray-50 p-8 rounded-xl shadow-md relative h-48 max-sm:h-52">
                 <div className="pt-6 pb-2">
                   <p className="text-center text-gray-800">
                     "{testimonials[currentTestimonial].quote}"

@@ -7,7 +7,6 @@ import textName from "../assets/textWhite.png";
 const Footer = () => {
   const location = useLocation();
   const hideContactSection =
-    location.pathname.startsWith("/view-product/") ||
     location.pathname === "/get-in-touch";
 
   return (
@@ -16,7 +15,7 @@ const Footer = () => {
         {/* Left Section - Contact Form */}
         {!hideContactSection && (
           <div className="w-full lg:w-1/2 p-6 md:p-12 lg:px-24 lg:py-16">
-            <h1 className="text-2xl font-semibold mb-6 font-poppins">
+            <h1 className="text-xl font-semibold mb-6 font-poppins">
               Contact Us
             </h1>
             <ContactForm />
@@ -41,7 +40,7 @@ const Footer = () => {
               </div>
             </div>
 
-            <p className="mb-8 text-md text-center font-poppins">
+            <p className="mb-8 text-sm text-center font-poppins">
               Ramla Suits specializes in custom-made suits, tuxedos, shirts, and
               traditional attire, crafted with premium fabrics and expert
               craftsmanship. We cater to professionals, tourists, and style-
@@ -63,7 +62,7 @@ const Footer = () => {
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              className="w-5 h-5 mr-2"
+              className="w-8 h-8 mr-2"
             >
               <path
                 strokeLinecap="round"
@@ -78,7 +77,10 @@ const Footer = () => {
                 d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
               />
             </svg>
-            <span>Near Fish Round About Al Muteena Street, Deira, Dubai</span>
+            <div className="flex flex-col font-poppins text-sm">
+              <span>Near Fish Round About</span>
+              <span>Al Muteena Street, Deira, Dubai</span>
+            </div>
           </div>
 
           {/* Phone */}
@@ -88,7 +90,7 @@ const Footer = () => {
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              className="w-5 h-5 mr-2"
+              className="w-6 h-6 mr-2"
             >
               <path
                 strokeLinecap="round"
@@ -97,7 +99,7 @@ const Footer = () => {
                 d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
               />
             </svg>
-            <span>+04 2652 388</span>
+            <span>+971 4 265 2388</span>
           </div>
         </div>
 
@@ -158,7 +160,8 @@ const Footer = () => {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="currentColor" strokeWidth="1.5"
+                stroke="currentColor"
+                strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 className="w-6 h-6"
