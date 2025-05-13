@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { sendEmailEnquiry } from "../api/api";
 
-const EnquiryFormModal = ({ isOpen, onClose, productName }) => {
+const EnquiryFormModal = ({ isOpen, onClose, product }) => {
   const [formData, setFormData] = useState({
     firstName: "",
     email: "",
     telephone: "",
     message: "",
   });
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null); // null, 'success', 'error'
-
+  
   // Reset form data when modal closes or opens
   useEffect(() => {
     if (isOpen) {
@@ -24,7 +24,7 @@ const EnquiryFormModal = ({ isOpen, onClose, productName }) => {
       });
       setSubmitStatus(null);
     }
-  }, [isOpen, productName]);
+  }, [isOpen, product]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,24 +37,28 @@ const EnquiryFormModal = ({ isOpen, onClose, productName }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
+      // Make sure product is properly formatted for the backend
+      const productForSubmission = product ? [product] : [];
+      
       // Use the imported API function
       await sendEmailEnquiry({
         name: formData.firstName,
         email: formData.email,
         phone: formData.telephone,
-        message: formData.message
+        message: formData.message,
+        productDetails: productForSubmission, // Send as array
       });
-      
-      setSubmitStatus('success');
+
+      setSubmitStatus("success");
       setTimeout(() => {
         resetForm();
         onClose();
       }, 2000); // Close after 2 seconds on success
     } catch (error) {
       console.error("Error sending email:", error);
-      setSubmitStatus('error');
+      setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
     }
@@ -89,6 +93,14 @@ const EnquiryFormModal = ({ isOpen, onClose, productName }) => {
             styling advice and cloths, to book an appointment for a fitting or
             to discuss your needs with one of our cutters.
           </p>
+          
+          {/* Show product info if available */}
+          {product && (
+            <div className="mb-4 p-3 border border-white/30 bg-white/5">
+              <p className="text-sm font-semibold">Selected Product:</p>
+              <p className="text-xs">{product.name} {product.sku ? `(${product.sku})` : ''}</p>
+            </div>
+          )}
         </div>
 
         {/* Right Column */}
@@ -113,24 +125,48 @@ const EnquiryFormModal = ({ isOpen, onClose, productName }) => {
               />
             </svg>
           </button>
-          
-          {submitStatus === 'success' ? (
+
+          {submitStatus === "success" ? (
             <div className="text-center py-8">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto text-green-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-12 w-12 mx-auto text-green-500 mb-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
               <h3 className="text-xl mb-2">Thank You!</h3>
               <p>Your enquiry has been submitted successfully.</p>
             </div>
-          ) : submitStatus === 'error' ? (
+          ) : submitStatus === "error" ? (
             <div className="text-center py-8">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto text-red-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-12 w-12 mx-auto text-red-500 mb-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
               </svg>
               <h3 className="text-xl mb-2">Submission Failed</h3>
-              <p className="mb-4">There was an error submitting your enquiry. Please try again.</p>
-              <button 
-                onClick={() => setSubmitStatus(null)} 
+              <p className="mb-4">
+                There was an error submitting your enquiry. Please try again.
+              </p>
+              <button
+                onClick={() => setSubmitStatus(null)}
                 className="bg-white text-black py-2 px-6 text-sm"
               >
                 Try Again
@@ -191,7 +227,9 @@ const EnquiryFormModal = ({ isOpen, onClose, productName }) => {
                   type="submit"
                   disabled={isSubmitting}
                   className={`bg-white text-black py-2 px-8 font-poppins text-sm ${
-                    isSubmitting ? "opacity-50 cursor-not-allowed" : "hover:bg-opacity-90"
+                    isSubmitting
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:bg-opacity-90"
                   }`}
                 >
                   {isSubmitting ? "Submitting..." : "Submit Your Enquiry"}

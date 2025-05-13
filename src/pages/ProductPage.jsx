@@ -278,7 +278,7 @@ const ProductPage = () => {
       <EnquiryFormModal 
         isOpen={isEnquiryModalOpen}
         onClose={() => setIsEnquiryModalOpen(false)}
-        productName={product.name}
+        product={product}
       />
 
       {/* You May Also Like Section - Full Width */}

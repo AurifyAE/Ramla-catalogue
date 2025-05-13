@@ -52,8 +52,9 @@ export const searchProducts = async (query) => {
 export const sendEmailEnquiry = (emailData) => {
     return axiosInstance.post('/mailer', {
         name: emailData.name,
-        email: emailData.email,
+        mail: emailData.email,
         phone: emailData.phone,
-        message: emailData.message
+        message: emailData.message,
+        productDetails: Array.isArray(emailData.productDetails) ? emailData.productDetails : []
     });
 };

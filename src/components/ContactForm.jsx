@@ -30,6 +30,7 @@ const ContactForm = () => {
         email: formData.email,
         phone: formData.telephone,
         message: formData.message,
+        productDetails: formData.productDetails || [],
       });
 
       setSubmitStatus("success");
@@ -73,7 +74,9 @@ const ContactForm = () => {
             />
           </svg>
           <h3 className="text-lg mb-2">Thank You!</h3>
-          <p className="text-sm">Your enquiry has been submitted successfully.</p>
+          <p className="text-sm">
+            Your enquiry has been submitted successfully.
+          </p>
         </div>
       ) : submitStatus === "error" ? (
         <div className="text-center py-6">
@@ -92,7 +95,9 @@ const ContactForm = () => {
             />
           </svg>
           <h3 className="text-lg mb-2">Submission Failed</h3>
-          <p className="mb-3 text-sm">There was an error submitting your enquiry. Please try again.</p>
+          <p className="mb-3 text-sm">
+            There was an error submitting your enquiry. Please try again.
+          </p>
           <button
             onClick={() => setSubmitStatus(null)}
             className="bg-white text-black py-1.5 px-5 text-sm hover:bg-gray-200"
@@ -151,7 +156,9 @@ const ContactForm = () => {
             type="submit"
             disabled={isSubmitting}
             className={`bg-white text-black px-6 py-2 sm:px-8 sm:py-3 border border-gray-700 text-sm font-poppins ${
-              isSubmitting ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-200"
+              isSubmitting
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:bg-gray-200"
             }`}
           >
             {isSubmitting ? "Submitting..." : "Send Now"}
