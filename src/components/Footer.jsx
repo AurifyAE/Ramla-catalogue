@@ -139,7 +139,7 @@ const Footer = () => {
                 <path d="M22 2L15 22l-4-9L2 9l20-7z" />
               </svg>
             </a>
-            <a href="#" className="text-white hover:text-gray-300">
+            <a href="https://www.instagram.com/ramla_style_italia?igsh=MTF0ODAzamJqMGNkeA%3D%3D&utm_source=qr" className="text-white hover:text-gray-300">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
