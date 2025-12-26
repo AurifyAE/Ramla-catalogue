@@ -49,7 +49,7 @@ export default function Header() {
         <div className="flex items-center space-x-4 md:space-x-6">
           <div className="flex items-center space-x-1">
             <Phone size={16} />
-            <span className="text-sm">+971 56 178 2089</span>
+            <span className="text-sm">+971 50 464 2386</span>
           </div>
           <div className="flex items-center space-x-1">
             <Mail size={16} />
